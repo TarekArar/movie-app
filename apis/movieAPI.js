@@ -5,9 +5,12 @@ export const MovieAPI = {
     return api.get("/genre/movie/list");
   },
   getMovies: function (query = "", page = 1) {
-    if (!query) return api.get(`/discover/movie?page=${page}`);
+    if (!query)
+      return api.get(`/discover/movie?page=${page}&&include_adult=false`);
 
-    return api.get(`/search/movie?query=${query}&&page=${page}`);
+    return api.get(
+      `/search/movie?query=${query}&&page=${page}&&include_adult=false`
+    );
   },
   getMovie: function (id) {
     return api.get(`/movie/${id}`);
