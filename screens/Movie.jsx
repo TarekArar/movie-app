@@ -4,6 +4,7 @@ import { MovieAPI } from "../apis/movieAPI";
 import { IMAGE_BASE_URI } from "../constants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useQuery } from "react-query";
+import Loading from "../components/Loading";
 
 export default function Movie({ route }) {
   const { id } = route.params;
@@ -23,11 +24,11 @@ export default function Movie({ route }) {
   const actors = actorsResponse?.data?.crew;
 
   return isLoading ? (
-    <Text>Loading...</Text>
+    <Loading />
   ) : error ? (
     <Text>{JSON.stringify(error)}</Text>
   ) : (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <ImageBackground
         style={styles.image}
         source={{
@@ -42,7 +43,9 @@ export default function Movie({ route }) {
       <View style={styles.info}>
         <View style={styles.infoItem}>
           <Text style={styles.title}>Duration</Text>
-          <Text style={styles.text}>02h 15m</Text>
+          <Text style={styles.text}>
+            {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}min
+          </Text>
         </View>
         <View style={styles.infoItem}>
           <Text style={styles.title}>Genre</Text>
@@ -79,7 +82,7 @@ export default function Movie({ route }) {
 
         <ScrollView horizontal style={styles.actorsList}>
           {actors?.map((actor) => (
-            <View style={styles.actor}>
+            <View key={actor.id} style={styles.actor}>
               <Image
                 style={styles.actorImage}
                 source={{
@@ -96,6 +99,9 @@ export default function Movie({ route }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   image: {
     width: "100%",
     height: 220,
@@ -119,11 +125,10 @@ const styles = StyleSheet.create({
     gap: 5,
     flex: 1,
     alignItems: "flex-start",
-    flexDirection: "row",
     flexWrap: "wrap",
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
   },
   text: {
@@ -143,14 +148,14 @@ const styles = StyleSheet.create({
   },
   actor: {
     width: 80,
-    height: 60,
+    // height: 60,
     justifyContent: "flex-start",
     alignItems: "center",
   },
   actorImage: {
     width: 50,
     height: 50,
-    borderRadius: "50%",
+    borderRadius: 50,
   },
   actorName: {
     textAlign: "center",
