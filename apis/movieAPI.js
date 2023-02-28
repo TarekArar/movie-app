@@ -4,7 +4,13 @@ export const MovieAPI = {
   getGenres: function () {
     return api.get("/genre/movie/list");
   },
-  getMovies: function (page?: string) {
-    return api.get("list/1?page=1");
+  getMovies: function (genreId) {
+    return api.get(`/list/${genreId}`);
+  },
+  getMovie: function (id) {
+    return api.get(`/movie/${id}`);
+  },
+  getMovieCrew: function (id) {
+    return api.get(`/movie/${id}/credits`);
   },
 };
