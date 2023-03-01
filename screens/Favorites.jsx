@@ -3,13 +3,15 @@ import React from "react";
 import { useAuthContext } from "../contexts/auth";
 
 export default function Favorites({ navigation }) {
-  const { user } = useAuthContext();
+  const { user, logout } = useAuthContext();
   return (
     <View style={styles.container}>
       {user ? (
         <>
           <Text>Hi {user.email},</Text>
           <Text> Favorited movies will appear here </Text>
+
+          <Button title="Logout" onPress={logout} />
         </>
       ) : (
         <>

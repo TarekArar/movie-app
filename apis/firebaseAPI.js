@@ -9,7 +9,7 @@ const auth = getAuth();
 
 export const firebaseAPI = {
   loginUser: function (email, password) {
-    signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password);
   },
   createAccount: function (email, password) {
     return createUserWithEmailAndPassword(auth, email, password);

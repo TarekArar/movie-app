@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync("uid");
+    await SecureStore.deleteItemAsync("user");
     setUser(null);
   };
 
