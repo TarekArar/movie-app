@@ -18,4 +18,7 @@ export const MovieAPI = {
   getMovieCrew: function (id) {
     return api.get(`/movie/${id}/credits`);
   },
+  getMoviesByGenre: function (genreId) {
+    return api.get(`/list/${genreId}`);
+  },
 };

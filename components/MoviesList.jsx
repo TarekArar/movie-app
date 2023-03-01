@@ -2,14 +2,14 @@ import { View, StyleSheet } from "react-native";
 import React from "react";
 import Movie from "./Movie";
 
-export default function MoviesList({ movies }) {
+export default function MoviesList({ movies, navigate }) {
   return (
     <View style={styles.container}>
       {movies?.map((movie) => (
         <Movie
           key={movie.id}
           {...movie}
-          showDetails={() => navigation.navigate("Movie", { id: movie.id })}
+          showDetails={() => navigate("Movie", { id: movie.id })}
         />
       ))}
     </View>

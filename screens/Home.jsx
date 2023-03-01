@@ -7,6 +7,7 @@ import useDebounce from "../hooks/useDebounce";
 import Loading from "../components/Loading";
 import MoviesList from "../components/MoviesList";
 import Pagination from "../components/Pagination";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home({ navigation }) {
   const [search, setSearch] = useState("");
@@ -40,17 +41,19 @@ export default function Home({ navigation }) {
         ) : error ? (
           <Text>{JSON.stringify(error)}</Text>
         ) : (
-          <MoviesList movies={movies} />
+          <MoviesList movies={movies} navigate={navigation.navigate} />
         )}
-      </ScrollView>
 
-      <Pagination
-        pagesNumber={
-          total_pages > 1000 ? Math.floor(total_pages / 100) : total_pages || 0
-        }
-        active={page}
-        onSelect={setPage}
-      />
+        <Pagination
+          pagesNumber={
+            total_pages > 1000
+              ? Math.floor(total_pages / 100)
+              : total_pages || 0
+          }
+          active={page}
+          onSelect={setPage}
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -59,7 +62,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  moviesScrollContainer: {
-    marginBottom: 40,
-  },
+  moviesScrollContainer: {},
 });

@@ -5,6 +5,7 @@ import { IMAGE_BASE_URI } from "../constants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useQuery } from "react-query";
 import Loading from "../components/Loading";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Movie({ route }) {
   const { id } = route.params;
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 220,
+    height: 250,
   },
   name: {
     color: "white",

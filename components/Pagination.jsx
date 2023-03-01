@@ -8,10 +8,17 @@ export default function Pagination({ pagesNumber, onSelect, active }) {
       {Array.from(Array(pagesNumber).keys()).map((el) => (
         <TouchableOpacity
           key={el}
-          style={[styles.pageNumber, active == el + 1 ? styles.active : null]}
+          style={[styles.pageNumber]}
           onPress={() => onSelect(el + 1)}
         >
-          <Text style={[styles.textNumber]}>{el + 1} </Text>
+          <Text
+            style={[
+              styles.textNumber,
+              active === el + 1 ? styles.active : null,
+            ]}
+          >
+            {el + 1}{" "}
+          </Text>
         </TouchableOpacity>
       ))}
     </ScrollView>
@@ -21,8 +28,9 @@ export default function Pagination({ pagesNumber, onSelect, active }) {
 const styles = StyleSheet.create({
   pages: {
     gap: 5,
-    position: "absolute",
-    bottom: 10,
+    paddingVertical: 20,
+    // position: "absolute",
+    // bottom: 10,
   },
   pageNumber: {
     width: 25,
