@@ -21,4 +21,7 @@ export const MovieAPI = {
   getMoviesByGenre: function (genreId) {
     return api.get(`/list/${genreId}`);
   },
+  getMovieVideos: function (id) {
+    return api.get(`/movie/${id}/videos`);
+  },
 };

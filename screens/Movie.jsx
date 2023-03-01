@@ -1,14 +1,27 @@
-import { View, Text, Image, StyleSheet, ImageBackground } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ImageBackground,
+  Modal,
+  Button,
+  Pressable,
+} from "react-native";
+import React, { useState } from "react";
 import { MovieAPI } from "../apis/movieAPI";
 import { IMAGE_BASE_URI } from "../constants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useQuery } from "react-query";
 import Loading from "../components/Loading";
 import { SafeAreaView } from "react-native-safe-area-context";
+import TrailerModal from "../components/TrailerModal";
+import { AntDesign } from "@expo/vector-icons";
 
-export default function Movie({ route }) {
+export default function Movie({ route, navigation }) {
   const { id } = route.params;
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const {
     data: movieResponse,
@@ -38,6 +51,14 @@ export default function Movie({ route }) {
       >
         <View style={styles.titleContainer}>
           <Text style={styles.name}>{movie.title}</Text>
+          <Pressable onPress={() => setModalVisible(true)} style={styles.icon}>
+            <AntDesign
+              name="play"
+              size={40}
+              color="red"
+              onPress={() => setModalVisible(true)}
+            />
+          </Pressable>
         </View>
       </ImageBackground>
 
@@ -82,8 +103,8 @@ export default function Movie({ route }) {
         <Text style={styles.title}>Actors</Text>
 
         <ScrollView horizontal style={styles.actorsList}>
-          {actors?.map((actor) => (
-            <View key={actor.id} style={styles.actor}>
+          {actors?.map((actor, idx) => (
+            <View key={idx} style={styles.actor}>
               <Image
                 style={styles.actorImage}
                 source={{
@@ -95,6 +116,12 @@ export default function Movie({ route }) {
           ))}
         </ScrollView>
       </View>
+
+      <TrailerModal
+        movieId={id}
+        isOpen={modalVisible}
+        close={() => setModalVisible(false)}
+      />
     </ScrollView>
   );
 }
@@ -111,11 +138,20 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 30,
     fontWeight: "bold",
+    maxWidth: "80%",
   },
   titleContainer: {
     backgroundColor: "rgba(0,0,0,0.3)",
     flex: 1,
-    justifyContent: "flex-end",
+    flexDirection: "row",
+
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  icon: {
+    position: "absolute",
+    bottom: -15,
+    right: 15,
   },
   info: {
     flexDirection: "row",
