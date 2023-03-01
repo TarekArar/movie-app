@@ -16,10 +16,26 @@ export default function LoginScreen({ navigation }) {
   const { login } = useAuthContext();
 
   const loginUser = () => {
-    if (email && password) {
-      const verifyCredentials = login(email, password);
-      if (!verifyCredentials) setError(true);
-    } else setError(true);
+    setError("");
+
+    var validEmailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (!email || !password) {
+      setError("Please fill all fields");
+      return;
+    }
+
+    if (!email.match(validEmailRegex)) {
+      setError("Please enter a Valid Email");
+      return;
+    }
+
+    try {
+      login(email, password);
+    } catch (err) {
+      setError("Invalid Credentails");
+    }
   };
 
   return (
@@ -46,7 +62,7 @@ export default function LoginScreen({ navigation }) {
       </View>
       {error && (
         <TouchableOpacity>
-          <Text style={styles.error}>An error occured, please try again</Text>
+          <Text style={styles.error}>{error}</Text>
         </TouchableOpacity>
       )}
       <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
@@ -65,19 +81,18 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#003f5c",
     alignItems: "center",
     justifyContent: "center",
   },
   logo: {
     fontWeight: "bold",
     fontSize: 50,
-    color: "#fb5b5a",
+    color: "#3E54AC",
     marginBottom: 40,
   },
   inputView: {
     width: "80%",
-    backgroundColor: "#bfbfbf",
+    backgroundColor: "#ECF2FF",
     borderRadius: 25,
     height: 50,
     marginBottom: 20,
@@ -94,12 +109,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   forgot: {
-    color: "white",
+    color: "#655DBB",
     fontSize: 11,
   },
   loginBtn: {
     width: "80%",
-    backgroundColor: "#fb5b5a",
+    backgroundColor: "#3E54AC",
     borderRadius: 25,
     height: 50,
     alignItems: "center",

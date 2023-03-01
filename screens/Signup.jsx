@@ -13,15 +13,34 @@ export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const { signup } = useAuthContext();
 
   const createUser = () => {
-    console.log("here");
-    setError(false);
-    if (email && password && password == passwordConfirmation) {
+    setError("");
+    var validEmailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (!email || !password || !passwordConfirmation) {
+      setError("Please fill all fields");
+      return;
+    }
+
+    if (!email.match(validEmailRegex)) {
+      setError("Please enter a Valid Email");
+      return;
+    }
+
+    if (password != passwordConfirmation) {
+      setError("Passwords does not match");
+      return;
+    }
+
+    try {
       signup(email, password);
-    } else setError(true);
+    } catch (err) {
+      setError("An error occured, please try again");
+    }
   };
 
   return (
@@ -32,7 +51,6 @@ export default function SignupScreen({ navigation }) {
           style={styles.inputText}
           placeholder="Email..."
           placeholderTextColor="#003f5c"
-          // value={email}
           onChangeText={(text) => setEmail(text)}
         />
       </View>
@@ -42,7 +60,6 @@ export default function SignupScreen({ navigation }) {
           style={styles.inputText}
           placeholder="Password..."
           placeholderTextColor="#003f5c"
-          // value={password}
           onChangeText={(text) => setPassword(text)}
         />
       </View>
@@ -53,13 +70,12 @@ export default function SignupScreen({ navigation }) {
           style={styles.inputText}
           placeholder="Password Confirmation..."
           placeholderTextColor="#003f5c"
-          // value={password}
           onChangeText={(text) => setPasswordConfirmation(text)}
         />
       </View>
-      {error && (
+      {Boolean(error) && (
         <TouchableOpacity>
-          <Text style={styles.error}>An error occured, please try again</Text>
+          <Text style={styles.error}>{error}</Text>
         </TouchableOpacity>
       )}
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -75,19 +91,18 @@ export default function SignupScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#003f5c",
     alignItems: "center",
     justifyContent: "center",
   },
   logo: {
     fontWeight: "bold",
     fontSize: 50,
-    color: "#fb5b5a",
+    color: "#3E54AC",
     marginBottom: 40,
   },
   inputView: {
     width: "80%",
-    backgroundColor: "#bfbfbf",
+    backgroundColor: "#ECF2FF",
     borderRadius: 25,
     height: 50,
     marginBottom: 20,
@@ -104,12 +119,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   forgot: {
-    color: "white",
+    color: "#655DBB",
     fontSize: 11,
   },
   loginBtn: {
     width: "80%",
-    backgroundColor: "#fb5b5a",
+    backgroundColor: "#3E54AC",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
