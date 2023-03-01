@@ -3,6 +3,7 @@
 - used react context to handle auth since we have small global state, in case of large apps I would use redux-toolkit
 - used React-query to make requests in order to handle caching out of the box
 - used debouncing while user searching to improve performance
+- Styles to be improved
 
 How To download the app:
 
