@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { MovieAPI } from "../apis/movieAPI";
 import { useQuery } from "react-query";
@@ -19,13 +19,15 @@ export default function Home({ navigation }) {
     () => MovieAPI.getMovies(debouncedSearch, page)
   );
 
-  const movies = data?.data?.results.slice(0, 10);
-  const total_pages = data?.data?.total_pages;
+  const { movies, total_pages } = useMemo(() => {
+    const { results, total_pages } = data?.data || {};
+    return { movies: results, total_pages };
+  }, [data]);
 
-  const onSearch = (text) => {
+  const onSearch = useCallback((text) => {
     setPage(1);
     setSearch(text);
-  };
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -8,7 +8,7 @@ import {
   Button,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { MovieAPI } from "../apis/movieAPI";
 import { IMAGE_BASE_URI } from "../constants";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -29,13 +29,13 @@ export default function Movie({ route, navigation }) {
     error,
   } = useQuery(["movie-details", id], () => MovieAPI.getMovie(id));
 
-  const movie = movieResponse?.data;
+  const movie = useMemo(() => movieResponse?.data, [movieResponse]);
 
   const { data: actorsResponse } = useQuery(["movie-actors", id], () =>
     MovieAPI.getMovieCrew(id)
   );
 
-  const actors = actorsResponse?.data?.crew;
+  const actors = useMemo(() => actorsResponse?.data?.crew, [actorsResponse]);
 
   return isLoading ? (
     <Loading />
