@@ -21,7 +21,7 @@ export default function Home({ navigation }) {
 
   const { movies, total_pages } = useMemo(() => {
     const { results, total_pages } = data?.data || {};
-    return { movies: results.slice(0, 10), total_pages };
+    return { movies: results?.slice(0, 10), total_pages };
   }, [data]);
 
   const onSearch = useCallback((text) => {
